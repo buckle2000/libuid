@@ -3,6 +3,9 @@
 	"authors": [
 		"mogu"
 	],
+    "libs-posix": [
+        "ui"
+    ],
 	"description": "D OO interface of libui",
 	"copyright": "Copyright © 2016, mogu",
 	"license": "MIT"

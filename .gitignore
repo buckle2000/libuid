@@ -20,6 +20,7 @@ docs.json
 __dummy.html
 docs/
 dub.selections.json
+dub.userprefs
 
 # Code coverage
 *.lst
