@@ -1,0 +1,9 @@
+{
+	"name": "libuid",
+	"authors": [
+		"mogu"
+	],
+	"description": "D OO interface of libui",
+	"copyright": "Copyright © 2016, mogu",
+	"license": "MIT"
+}
