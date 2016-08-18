@@ -49,7 +49,7 @@ mixin template EventListenerMixin(string Event, TargetT = NoneTypeTag, ReturnT =
             }.format(Event, TargetT.stringof, ReturnT.stringof, RET);
         }
     }
-    pragma(msg, Impl!());
+    //pragma(msg, Impl!());
     mixin(Impl!());
 }
 
@@ -522,7 +522,6 @@ struct uiAreaMouseEvent {
 
     int Count;
 
-    pragma(mangle, "Modifiers")
     ModifiersT Modifiers;
 
     uint64_t Held1To64;
