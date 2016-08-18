@@ -5,159 +5,111 @@ import ui.Control;
 import std.typecons: Tuple;
 
 class Window : Control {
-private:
-    void delegate(Window w)[] onPositionChangedListeners;
-    void delegate(Window w)[] onContentSizeChangedListeners;
-    void delegate(Window w)[] onClosingListeners;
-    
-    extern (C)
-    static void onPositionChangedCallBack(uiWindow *, void *data) {
-        auto w = cast(Window) data;
-        foreach (dlg; w.onPositionChangedListeners) {
-            dlg(w);
-        }
-    }
-    
-    extern (C)
-    static void onContentSizeChangedCallBack(uiWindow *, void *data) {
-        auto w = cast(Window) data;
-        foreach (dlg; w.onContentSizeChangedListeners) {
-            dlg(w);
-        }
-    }
-    
-    extern (C)
-    static int onClosingCallBack(uiWindow *, void *data) {
-        auto w = cast(Window) data;
-        foreach (dlg; w.onClosingListeners) {
-            dlg(w);
-        }
-        return 1;
-    }
+    protected uiWindow * _window;
+
+    mixin EventListenerMixin!("OnPositionChanged", Window);
+    mixin EventListenerMixin!("OnContentSizeChanged", Window);
+    mixin EventListenerMixin!("OnClosing", Window, int);
 
 public:
-    final uiWindow * convertToWindow() {
-        return cast(uiWindow *) _data;
-    }
-    alias convertToWindow this;
+    this(string title = "", int width = 1, int height = 1, bool hasMenubar = false) {
+        _window = uiNewWindow(title.ptr, width, height, cast(int) hasMenubar);
+        super(cast(uiControl *) _window);
 
-    this(string title = "", int width = 400, int height = 300, bool hasMenubar = false) {
-        super(uiNewWindow(title.ptr, width, height, cast(int) hasMenubar));
-
-        uiWindowOnPositionChanged(this, &onPositionChangedCallBack, cast(void*) this);
-        uiWindowOnContentSizeChanged(this, &onContentSizeChangedCallBack, cast(void*) this);
-        uiWindowOnClosing(this, &onClosingCallBack, cast(void *) this);
+        uiWindowOnPositionChanged(_window, &OnPositionChangedCallback, cast(void*) this);
+        uiWindowOnContentSizeChanged(_window, &OnContentSizeChangedCallback, cast(void*) this);
+        uiWindowOnClosing(_window, &OnClosingCallback, cast(void *) this);
     }
 
     string title() {
-        auto c = uiWindowTitle(this);
-        import core.stdc.string: strlen;
-        auto s = c[0..strlen(c)].idup;
-        import ui.Def: uiFreeText;
-        uiFreeText(c);
-        return s;
+        return uiWindowTitle(_window).toString;
     }
 
     Window setTitle(string title) {
-        uiWindowSetTitle(this, title.ptr);
+        uiWindowSetTitle(_window, title.ptr);
         return this;
     }
 
     auto position() {
         auto pos = Tuple!(int, "x", int, "y")();
-        uiWindowPosition(this, &pos.x, &pos.y);
+        uiWindowPosition(_window, &pos.x, &pos.y);
         return pos;
     }
 
     Window setPosition(int x, int y) {
-        uiWindowSetPosition(this, x, y);
+        uiWindowSetPosition(_window, x, y);
         return this;
     }
 
     Window center() {
-        uiWindowCenter(this);
-        return this;
-    }
-
-    Window addOnPositionChanged(void delegate(Window w) f) {
-        onPositionChangedListeners ~= f;
+        uiWindowCenter(_window);
         return this;
     }
 
     auto contentSize() {
         auto size = Tuple!(int, "width", int, "height")();
-        uiWindowContentSize(this, &size.width, &size.height);
+        uiWindowContentSize(_window, &size.width, &size.height);
         return size;
     }
 
     Window setContentSize(int width, int height) {
-        uiWindowSetContentSize(this, width, height);
+        uiWindowSetContentSize(_window, width, height);
         return this;
     }
 
     bool fullScreen() {
-        return cast(bool) uiWindowFullscreen(this);
+        return cast(bool) uiWindowFullscreen(_window);
     }
 
     Window setFullScreen(bool fullscreen) {
-        uiWindowSetFullscreen(this, cast(int) fullscreen);
-        return this;
-    }
-    
-    Window addOnContentSizeChanged(void delegate(Window w) f) {
-        onContentSizeChangedListeners ~= f;
-        return this;
-    }
-    
-    Window addOnClosing(void delegate(Window w) f) {
-        onClosingListeners ~= f;
-        import std.stdio: writeln;
-        onClosingListeners.writeln;
+        uiWindowSetFullscreen(_window, cast(int) fullscreen);
         return this;
     }
 
     bool borderless() {
-        return cast(bool) uiWindowBorderless(this);
+        return cast(bool) uiWindowBorderless(_window);
     }
 
     Window setBorderless(bool borderless) {
-        uiWindowSetBorderless(this, cast(int) borderless);
+        uiWindowSetBorderless(_window, cast(int) borderless);
         return this;
     }
 
     Window setChild(Control child) {
-        uiWindowSetChild(this, child);
+        if (child) {
+            _children ~= child;
+            child._parent = this;
+            uiWindowSetChild(_window, child._control);
+        } else {
+            uiWindowSetChild(_window, null);
+        }
         return this;
     }
 
     bool margined() {
-        return cast(bool) uiWindowMargined(this);
+        return cast(bool) uiWindowMargined(_window);
     }
 
     Window setMargined(bool margined) {
-        uiWindowSetMargined(this, cast(int) margined);
+        uiWindowSetMargined(_window, cast(int) margined);
+        return this;
+    }
+
+    string openFile() {
+        return uiOpenFile(_window).toString;
+    }
+
+    string saveFile() {
+        return uiSaveFile(_window).toString;
+    }
+
+    Window msgBox(string title, string discription) {
+        uiMsgBox(_window, title.ptr, discription.ptr);
+        return this;
+    }
+
+    Window msgBoxError(string title, string discription) {
+        uiMsgBoxError(_window, title.ptr, discription.ptr);
         return this;
     }
 }
-
-package:
-extern(C):
-struct uiWindow;
-char *uiWindowTitle(uiWindow *w);
-void uiWindowSetTitle(uiWindow *w, const(char) *title);
-void uiWindowPosition(uiWindow *w, int *x, int *y);
-void uiWindowSetPosition(uiWindow *w, int x, int y);
-void uiWindowCenter(uiWindow *w);
-void uiWindowOnPositionChanged(uiWindow *w, void function(uiWindow *, void *) f, void *data);
-void uiWindowContentSize(uiWindow *w, int *width, int *height);
-void uiWindowSetContentSize(uiWindow *w, int width, int height);
-int uiWindowFullscreen(uiWindow *w);
-void uiWindowSetFullscreen(uiWindow *w, int fullscreen);
-void uiWindowOnContentSizeChanged(uiWindow *w, void function(uiWindow *, void *) f, void *data);
-void uiWindowOnClosing(uiWindow *w, int function(uiWindow *w, void *data) f, void *data);
-int uiWindowBorderless(uiWindow *w);
-void uiWindowSetBorderless(uiWindow *w, int borderless);
-void uiWindowSetChild(uiWindow *w, uiControl *child);
-int uiWindowMargined(uiWindow *w);
-void uiWindowSetMargined(uiWindow *w, int margined);
-uiWindow *uiNewWindow(const(char) *title, int width, int height, int hasMenubar);
