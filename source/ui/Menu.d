@@ -60,7 +60,7 @@ class Menu {
         return this;
     }
 
-    Menu  appendSeparator() {
+    Menu appendSeparator() {
         uiMenuAppendSeparator(_menu);
         return this;
     }
