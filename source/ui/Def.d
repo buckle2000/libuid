@@ -60,14 +60,14 @@ enum DrawTextStretch : uint {
     UltraExpanded,
 }
 
-enum EModifiers : uint {
+enum ModifiersT : uint {
     Ctrl    = 1 << 0,
     Alt     = 1 << 1,
     Shift   = 1 << 2,
     Super   = 1 << 3,
 }
 
-enum EExtKey : uint {
+enum ExtKeyT : uint {
     Escape = 1,
     Insert,         // equivalent to "Help" on Apple keyboards
     Delete,

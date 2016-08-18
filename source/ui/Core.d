@@ -523,7 +523,7 @@ struct uiAreaMouseEvent {
     int Count;
 
     pragma(mangle, "Modifiers")
-    EModifiers Modifiers;
+    ModifiersT Modifiers;
 
     uint64_t Held1To64;
 }
@@ -536,10 +536,10 @@ struct uiAreaMouseEvent {
  
 struct uiAreaKeyEvent {
     char Key;
-    EExtKey ExtKey;
-    EModifiers Modifier;
+    ExtKeyT ExtKey;
+    ModifiersT Modifier;
     
-    EModifiers Modifiers;
+    ModifiersT Modifiers;
     
     int Up;
 }
