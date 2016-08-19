@@ -24,3 +24,6 @@ dub.userprefs
 
 # Code coverage
 *.lst
+
+# Output
+output/

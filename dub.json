@@ -3,10 +3,22 @@
 	"authors": [
 		"mogu"
 	],
-    "libs-posix": [
-        "ui"
-    ],
+    "targetType": "library",
+    "targetName": "uid",
+    "targetPath": "output",
 	"description": "D OO interface of libui",
 	"copyright": "Copyright © 2016, mogu",
-	"license": "MIT"
+	"license": "MIT",
+    "configurations": [
+        {
+            "name": "lib"
+        },
+        {
+            "name": "example1",
+            "targetType": "executable",
+            "targetName": "example1",
+            "libs": ["ui"],
+            "mainSourceFile": "examples/example1.d"
+        }
+    ]
 }
