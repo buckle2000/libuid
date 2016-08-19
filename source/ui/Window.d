@@ -12,7 +12,7 @@ class Window : Control {
     mixin EventListenerMixin!("OnClosing", Window, int);
 
 public:
-    this(string title = "", int width = 1, int height = 1, bool hasMenubar = false) {
+    this(string title = "", int width = 240, int height = 180, bool hasMenubar = false) {
         _window = uiNewWindow(title.ptr, width, height, cast(int) hasMenubar);
         super(cast(uiControl *) _window);
 
