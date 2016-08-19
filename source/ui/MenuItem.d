@@ -20,6 +20,8 @@ class MenuItem {
 
     this(uiMenuItem * menuItem) {
         _menuItem = menuItem;
+
+        uiMenuItemOnClicked(_menuItem, &OnClickedCallback, cast(void *) this);
     }
 
     MenuItem enable() {

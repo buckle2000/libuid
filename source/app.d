@@ -2,84 +2,206 @@ import std.stdio;
 
 import ui;
 
+Control makeBasicControlPage() {
+    auto vbox = new Box().setPadded(1);
+
+    auto hbox = new Box(false).setPadded(1);
+    vbox.append(hbox);
+
+    hbox.append(new Button("Button"))
+        .append(new Checkbox("Checkbox"))
+            ;
+    vbox.append(new Label("This is a label. Right now, labels can only span one line."))
+        .append(new Separator(false))
+            ;
+
+    auto group = new Group("Entries").setMargined(true);
+    vbox.append(group, true);
+
+    auto entryForm = new Form().setPadded(true);
+    group.setChild(entryForm);
+
+    entryForm.append("Entry", new Entry())
+        .append("Password Entry", new Entry(EntryStyle.Password))
+        .append("Search Entry", new Entry(EntryStyle.Search))
+        .append("Multiline Entry", new MultilineEntry, true)
+        .append("Multiline Entry No Wrap", new MultilineEntry(false), true)
+            ;
+
+    return vbox;
+}
+
+Control makeNumbersPage() {
+    auto hbox = new Box(false).setPadded(true);
+
+    auto group = new Group("Numbers").setMargined(true);
+    hbox.append(group, true);
+
+    auto vbox = new Box().setPadded(true);
+    group.setChild(vbox);
+
+    auto spinbox = new Spinbox(0, 100);
+    auto slider = new Slider(0, 100);
+    auto pbar = new ProgressBar();
+    spinbox.addOnChanged(delegate(Spinbox self) {
+            slider.setValue(self.value);
+            pbar.setValue(self.value);
+        });
+    slider.addOnChanged(delegate(Slider self) {
+            spinbox.setValue(self.value);
+            pbar.setValue(self.value);
+        });
+    vbox.append(spinbox)
+        .append(slider)
+        .append(pbar)
+            ;
+
+    auto ip = new ProgressBar().setValue(-1); // moving ProgressBar
+    vbox.append(ip);
+
+    group = new Group("Lists").setMargined(true);
+    hbox.append(group, true);
+
+    vbox = new Box().setPadded(true);
+    group.setChild(vbox);
+
+    auto cbox = new Combobox()
+        .append("Combobox Item 1")
+        .append("Combobox Item 2")
+        .append("Combobox Item 3")
+            ;
+    vbox.append(cbox);
+
+    auto ecbox = new EditableCombobox()
+        .append("Editable Item 1")
+        .append("Editable Item 2")
+        .append("Editable Item 3")
+            ;
+    vbox.append(ecbox);
+
+    auto rb = new RadioButtons()
+        .append("Radio Button 1")
+        .append("Radio Button 2")
+        .append("Radio Button 3")
+            ;
+    vbox.append(rb);
+
+    return hbox;
+}
+
+Control makeDataChoosersPage(Window win) {
+    auto hbox = new Box(false).setPadded(true);
+
+    auto vbox = new Box().setPadded(true);
+    hbox.append(vbox);
+
+    vbox.append(new DateTimePicker(DateTimePickerStype.Date))
+        .append(new DateTimePicker(DateTimePickerStype.Time))
+        .append(new DateTimePicker(DateTimePickerStype.DateTime))
+        .append(new FontButton)
+        .append(new ColorButton)
+            ;
+
+    hbox.append(new Separator);
+
+    vbox = new Box().setPadded(true);
+    hbox.append(vbox, true);
+
+    auto grid = new Grid().setPadded(true);
+    vbox.append(grid);
+
+    auto button = new Button("Open File");
+    auto entry = new Entry().setReadOnly(true);
+    button.addOnClicked(delegate(Button btn) {
+            auto filename = win.openFile;
+            if (filename is null) {
+                entry.setText("(cancelled)");
+                return;
+            }
+            entry.setText(filename);
+        });
+
+    grid.append(button, 0, 0)
+        .append(entry, 1, 0, 1, 1, true);
+
+    button = new Button("Save File");
+    auto entry2 = new Entry().setReadOnly(true);
+    button.addOnClicked(delegate(Button btn) {
+            auto filename = win.saveFile();
+            if (filename is null) {
+                entry2.setText("(cancelled)");
+                return;
+            }
+            entry.setText(filename);
+        });
+
+    grid.append(button, 0, 1)
+        .append(entry2, 1, 1, 1, 1, true);
+
+    auto msggrid = new Grid().setPadded(true);
+    grid.append(msggrid, 0, 2, 2, 1, false, Align.Center, false, Align.Start);
+
+    button = new Button("Message Box");
+    button.addOnClicked(delegate(Button btn) {
+            win.msgBox("This is a normal message box.",
+                "More detailed information can be shown here.");
+        });
+    msggrid.append(button, 0, 0);
+
+    button = new Button("Error Box");
+    button.addOnClicked(delegate(Button btn) {
+            win.msgBoxError("This message box describes an error.",
+                "More detailed information can be shown here.");
+        });
+    msggrid.append(button, 1, 0);
+    return hbox;
+}
+
 void main()
 {
-    auto win = new Window();
-    auto box = new Box()
-        .append(new Button("Button"))
-        .append(new Button().addOnClicked(delegate(Button btn){
-                        win.msgBoxError("title", "discription");
-                    }))
-        .append(new FontButton())
-        .append(new ColorButton())
-        .append(new Grid()
-                .append(new Button, 0, 0, 2, 2, true)
-                .append(new Button, 2, 0, 1, 1, true)
-                .append(new Button, 2, 1, 1, 1, true)
-                .append(new Button, 0, 2, 1, 1, true)
-                .append(new Button, 1, 2, 1, 1, true)
-                .append(new Button, 2, 2, 1, 1, true)
-            )
-//        .append(new Tab()
-//                .append("Tab 1", new Checkbox("Checkbox"))
-//                .append("Tab 2", new Checkbox)
-//                .insertAt("Tab 1.5", 1, new Box()
-//                    .append(new Entry(EntryStyle.Normal))
-//                    .append(new Entry(EntryStyle.Password))
-//                    .append(new Entry(EntryStyle.Search))
-//                )
-//            )
-//        .append(new Group("Group")
-//                .setChild(new Label("Label Text"))
-//            )
-//        .append(new Spinbox)
-//        .append(new Slider)
-//        .append(new Separator(false))
-//        .append(new ProgressBar()
-//                .setValue(15)
-//            )
-//        .append(new Combobox()
-//                .append("Combobox 1")
-//                .append("Combobox 2")
-//            )
-//        .append(new EditableCombobox()
-//                .append("EditableCombobox 1")
-//                .append("EditableCombobox 2")
-//                .setText("CurrentText")
-//            )
-//        .append(new RadioButtons()
-//                .append("RadioButtons 1")
-//                .append("RadioButtons 2")
-//            )
-//        .append(new DateTimePicker())
-//        .append(new DateTimePicker(DateTimePickerStype.Date))
-//        .append(new DateTimePicker(DateTimePickerStype.Time))
-//        .append(new MultilineEntry().append("MultilineEntry 1"), true)
-//        .append(new MultilineEntry(false).append("MultilineEntry 2"), true)
-    ;
+    // as design in libui now, menu must be created before window has been created
+    auto menu = new Menu("File");
+    auto openMenuItem = menu.appendItem("Open");
+    auto saveMenuItem = menu.appendItem("Save");
 
-    win.setTitle("Window Title")
-        .setChild(box)
-        .addOnClosing(delegate(Window w) {
-                import std.stdio;
-                "addOnClosing...".writeln;
-                App.quit;
-            })
-        .show;
-    
-    auto menu = new Menu("Menu1")
-        .appendItem("Item 1", delegate(MenuItem i) { i.setChecked(true); })
-        .appendItem("Item 2")
-        .appendItem("Item 3");
-    menu = new Menu("Menu2")
-        .appendCheckItem("Item check")
-        .appendAboutItem();
-//    menu = new Menu()
-//        .appendQuitItem();
-//    menu = new Menu()
-//        .appendPreferencesItem();
-//    menu = new Menu()
-//        .appendAboutItem();
+    menu = new Menu("Edit");
+    menu.appendCheckItem("Checkable Item");
+    menu.appendSeparator
+        .appendItem("Disabled Item").disable();
+    menu.appendPreferencesItem;
 
-    App.run;
+    menu = new Menu("Help");
+    menu.appendItem("Help");
+    menu.appendAboutItem;
+
+    auto win = new Window("libuid Control Gallery", 640, 480, true).setMargined(true);
+    win.addOnClosing(_ => App.quit);
+
+    openMenuItem.addOnClicked(delegate(MenuItem self) {
+            auto filename = win.openFile();
+            if (filename is null) {
+                win.msgBoxError("No file selected", "Don't be alarmed!");
+                return;
+            }
+            win.msgBox("File selected", filename);
+        });
+    saveMenuItem.addOnClicked(delegate(MenuItem self) {
+            auto filename = win.openFile();
+            if (filename is null) {
+                win.msgBoxError("No file selected", "Don't be alarmed!");
+                return;
+            }
+            win.msgBox("File selected (don't worry, it's still there)", filename);
+        });
+
+    auto tab = new Tab;
+    win.setChild(tab);
+
+    tab.append("Basic Controls", makeBasicControlPage).setMargined(0, true)
+        .append("Numbers add Lists", makeNumbersPage).setMargined(1, true)
+        .append("Data Choosers", makeDataChoosersPage(win)).setMargined(2, true);
+
+    win.show;
+
+    App.run(win);
 }

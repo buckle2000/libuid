@@ -5,6 +5,9 @@ public import ui.Def;
 package:
 
 string toString(char *source) {
+    if (!source) {
+        return null;
+    }
     import core.stdc.string: strlen;
     auto s = source[0..strlen(source)].idup;
     uiFreeText(source);

@@ -27,4 +27,5 @@ public import ui.Menu;
 
 public import ui.FontButton;
 public import ui.ColorButton;
+public import ui.Form;
 public import ui.Grid;

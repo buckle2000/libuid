@@ -15,49 +15,34 @@ class Menu {
         _menu = uiNewMenu(name.ptr);
     }
 
-    Menu appendItem(string name, void delegate(MenuItem i) f = null) {
+    MenuItem appendItem(string name) {
         auto item = new MenuItem(uiMenuAppendItem(_menu, name.ptr));
         _menuAndItems ~= item;
-        if (f) {
-            f(item);
-        }
-        return this;
+        return item;
     }
-    
-    Menu appendCheckItem(string name, void delegate(MenuItem i) f = null) {
+
+    MenuItem appendCheckItem(string name) {
         auto item = new MenuItem(uiMenuAppendCheckItem(_menu, name.ptr));
         _menuAndItems ~= item;
-        if (f) {
-            f(item);
-        }
-        return this;
+        return item;
     }
-    
-    Menu appendQuitItem(void delegate(MenuItem i) f = null) {
+
+    MenuItem appendQuitItem() {
         auto item = new MenuItem(uiMenuAppendQuitItem(_menu));
         _menuAndItems ~= item;
-        if (f) {
-            f(item);
-        }
-        return this;
+        return item;
     }
-    
-    Menu appendPreferencesItem(void delegate(MenuItem i) f = null) {
+
+    MenuItem appendPreferencesItem() {
         auto item = new MenuItem(uiMenuAppendPreferencesItem(_menu));
         _menuAndItems ~= item;
-        if (f) {
-            f(item);
-        }
-        return this;
+        return item;
     }
-    
-    Menu appendAboutItem(void delegate(MenuItem i) f = null) {
+
+    MenuItem appendAboutItem() {
         auto item = new MenuItem(uiMenuAppendAboutItem(_menu));
         _menuAndItems ~= item;
-        if (f) {
-            f(item);
-        }
-        return this;
+        return item;
     }
 
     Menu appendSeparator() {

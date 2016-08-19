@@ -9,16 +9,6 @@ class Control {
 
     protected this(uiControl *other) {
         _control = other;
-        import std.stdio;
-        "#construct: ".writeln(_control);
-    }
-
-    ~this() {
-        if (!_parent) {
-            import std.stdio;
-            "#destroy: ".writeln(_control);
-            uiControlDestroy(_control);
-        }
     }
 
     uintptr_t handle() {
