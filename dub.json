@@ -1,14 +1,14 @@
 {
-	"name": "libuid",
-	"authors": [
-		"mogu"
-	],
+    "name": "libuid",
+    "authors": [
+        "mogu"
+    ],
     "targetType": "library",
     "targetName": "uid",
     "targetPath": "output",
-	"description": "D OO interface of libui",
-	"copyright": "Copyright © 2016, mogu",
-	"license": "MIT",
+    "description": "D OO interface of libui",
+    "copyright": "Copyright © 2016, mogu",
+    "license": "MIT",
     "configurations": [
         {
             "name": "lib"
@@ -17,9 +17,9 @@
             "name": "example1",
             "targetType": "executable",
             "targetName": "example1",
-			"dflags-windows-x86-dmd": ["-m32mscoff"],
+            "dflags-windows-x86-dmd": ["-m32mscoff"],
             "libs-posix": ["ui"],
-			"libs-windows": ["libui"],
+            "libs-windows": ["libui"],
             "mainSourceFile": "examples/example1.d"
         }
     ]
