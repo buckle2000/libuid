@@ -17,7 +17,9 @@
             "name": "example1",
             "targetType": "executable",
             "targetName": "example1",
-            "libs": ["ui"],
+			"dflags-windows-x86-dmd": ["-m32mscoff"],
+            "libs-posix": ["ui"],
+			"libs-windows": ["libui"],
             "mainSourceFile": "examples/example1.d"
         }
     ]
