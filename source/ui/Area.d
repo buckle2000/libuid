@@ -3,8 +3,8 @@
 import ui.Control;
 
 class Area : Control {
-    protected uiAreaHandler * _handler;
     protected uiArea * _area;
+    protected uiAreaHandler * _handler;
 
     private {
         void initHandler() {
@@ -81,16 +81,15 @@ class Area : Control {
         }
     }
 
-    this(int width = 100, int height = 100, bool scrolling = false) {
-        super(cast(uiControl *) _area);
+    this(bool scrolling = false, int width = 240, int height = 180) {
         initHandler;
-        if (scrolling) {
+        if (!scrolling) {
             _area = uiNewArea(_handler);
-            setSize(width, height);
         } else {
             _area = uiNewScrollingArea(_handler, width, height);
         }
         _areaMap[_area] = this;
+        super(cast(uiControl *) _area);
     }
 
     Area setSize(int width, int height) {
@@ -108,8 +107,6 @@ class Area : Control {
         return this;
     }
 }
-
-private:
 
 struct DrawParams {
     private uiAreaDrawParams * _params;

@@ -307,11 +307,11 @@ uiArea *uiNewScrollingArea(uiAreaHandler *ah, int width, int height);
 
 struct uiAreaDrawParams {
     uiDrawContext *Context;
-    
+
     // TODO document that this is only defined for nonscrolling areas
     double AreaWidth;
     double AreaHeight;
-    
+
     double ClipX;
     double ClipY;
     double ClipWidth;
@@ -325,18 +325,18 @@ struct uiDrawPath;
 
 //struct uiDrawBrushGradientStop;
 
-/+ 
+/+
  + enums:
  + uiDrawBrushType
  + uiDrawLineCap
  + uiDrawLineJoin
- + 
+ +
  + defines:
  + uiDrawDefaultMiterLimit
- + 
+ +
  + enums:
  + uiDrawFillMode
- + 
+ +
  +/
 
 struct uiDrawMatrix {
@@ -349,14 +349,14 @@ struct uiDrawMatrix {
 }
 
 struct uiDrawBrush {
-    DrawBrushType Type;
-    
+    BrushType Type;
+
     // solid brushes
     double R;
     double G;
     double B;
     double A;
-    
+
     // gradient brushes
     double X0;      // linear: start X, radial: start X
     double Y0;      // linear: start Y, radial: start Y
@@ -370,9 +370,9 @@ struct uiDrawBrush {
     // Direct2D: repeat, reflect, pad; no individual control
     // Core Graphics: none, pad; before and after individually
     // TODO cairo documentation is inconsistent about pad
-    
+
     // TODO images
-    
+
     // TODO transforms
 }
 
@@ -385,8 +385,8 @@ struct uiDrawBrushGradientStop {
 }
 
 struct uiDrawStrokeParams {
-    DrawLineCap Cap;
-    DrawLineJoin Join;
+    LineCap Cap;
+    LineJoin Join;
     // TODO what if this is 0? on windows there will be a crash with dashing
     double Thickness;
     double MiterLimit;
@@ -397,7 +397,7 @@ struct uiDrawStrokeParams {
     double DashPhase;
 }
 
-uiDrawPath *uiDrawNewPath(DrawFillMode fillMode);
+uiDrawPath *uiDrawNewPath(FillMode fillMode);
 void uiDrawFreePath(uiDrawPath *p);
 
 void uiDrawPathNewFigure(uiDrawPath *p, double x, double y);
@@ -464,15 +464,15 @@ struct uiDrawTextFont;
  + uiDrawTextWeight
  + uiDrawTextItalic
  + uiDrawTextStretch
- + 
+ +
  +/
 
 struct uiDrawTextFontDescriptor {
     const(char) *Family;
     double Size;
-    DrawTextWeight Weight;
-    DrawTextItalic Italic;
-    DrawTextStretch Stretch;
+    TextWeight Weight;
+    TextItalic Italic;
+    TextStretch Stretch;
 }
 
 struct uiDrawTextFontMetrics {
@@ -507,7 +507,7 @@ void uiDrawText(uiDrawContext *c, double x, double y, uiDrawTextLayout *layout);
 /+
  + enums:
  + uiModifiers
- + 
+ +
  +/
 
 // TODO document drag captures
@@ -533,16 +533,16 @@ struct uiAreaMouseEvent {
 /+
  + enums:
  + uiExtKey
- + 
+ +
  +/
- 
+
 struct uiAreaKeyEvent {
     char Key;
     ExtKeyT ExtKey;
     ModifiersT Modifier;
-    
+
     ModifiersT Modifiers;
-    
+
     int Up;
 }
 
@@ -570,7 +570,7 @@ uiForm *uiNewForm();
  + enums:
  + uiAlign
  + uiAt
- + 
+ +
  +/
 
 struct uiGrid;

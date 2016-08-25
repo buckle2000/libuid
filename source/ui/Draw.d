@@ -45,26 +45,32 @@ struct Context {
     }
 }
 
-class Path {
+struct Path {
     private uiDrawPath * _path;
+    static int[uiDrawPath *] _ref;
 
-    this(DrawFillMode mode) {
+    this(FillMode mode) {
         _path = uiDrawNewPath(mode);
+        _ref[_path] = 1;
     }
 
     ~this() {
-        if (_path) {
+        _ref[_path]--;
+        if (_ref[_path] == 0) {
             uiDrawFreePath(_path);
-            _path = null;
         }
     }
 
-    Path newFigure(double x, double y) {
+    this(this) {
+        _ref[_path]++;
+    }
+
+    ref newFigure(double x, double y) {
         uiDrawPathNewFigure(_path, x, y);
         return this;
     }
 
-    Path newFigureWithArc(
+    ref newFigureWithArc(
         double xCenter, double yCenter,
         double radius, double startAngle, double sweep, bool negative
     ) {
@@ -73,12 +79,12 @@ class Path {
         return this;
     }
 
-    Path lineTo(double x, double y) {
+    ref lineTo(double x, double y) {
         uiDrawPathLineTo(_path, x, y);
         return this;
     }
 
-    Path arcTo(
+    ref arcTo(
         double xCenter, double yCenter, double radius,
         double startAngle, double sweep, bool negative
     ) {
@@ -87,22 +93,22 @@ class Path {
         return this;
     }
 
-    Path bezierTo(double c1x, double c1y, double c2x, double c2y, double endX, double endY) {
+    ref bezierTo(double c1x, double c1y, double c2x, double c2y, double endX, double endY) {
         uiDrawPathBezierTo(_path, c1x, c1y, c2x, c2y, endX, endY);
         return this;
     }
 
-    Path closeFigure() {
+    ref closeFigure() {
         uiDrawPathCloseFigure(_path);
         return this;
     }
 
-    Path addRectangle(double x, double y, double width, double height) {
+    ref addRectangle(double x, double y, double width, double height) {
         uiDrawPathAddRectangle(_path, x, y, width, height);
         return this;
     }
 
-    Path end() {
+    ref end() {
         uiDrawPathEnd(_path);
         return this;
     }
@@ -137,7 +143,7 @@ struct Matrix {
         return this;
     }
 
-    ref traslate(double x, double y) {
+    ref translate(double x, double y) {
         uiDrawMatrixTranslate(_matrix, x, y);
         return this;
     }
@@ -279,18 +285,29 @@ struct StrokeParams {
     }
 }
 
-class FontFamilies {
+struct FontFamilies {
     private uiDrawFontFamilies * _families;
+    static int[uiDrawFontFamilies *] _ref;
 
-    this() {
-        _families = uiDrawListFontFamilies;
+    static FontFamilies create() {
+        return FontFamilies(uiDrawListFontFamilies);
+    }
+    private this(uiDrawFontFamilies * families) {
+        _families = families;
+        _ref[_families] = 1;
     }
 
     ~this() {
-        if (_families) {
+        _ref[_families]--;
+        if (_ref[_families] == 0) {
             uiDrawFreeFontFamilies(_families);
-            _families = null;
         }
+    }
+
+    @disable this();
+
+    this(this) {
+        _ref[_families]++;
     }
 
     size_t numFamilies() {
@@ -330,7 +347,7 @@ struct TextFontDescriptor {
     }
 
     TextFont loadClosestFont() {
-        return new TextFont(uiDrawLoadClosestFont(_descriptor));
+        return TextFont(uiDrawLoadClosestFont(_descriptor));
     }
 }
 
@@ -356,30 +373,36 @@ struct TextFontMetrics {
     }
 }
 
-class TextFont {
+struct TextFont {
     private uiDrawTextFont * _font;
+    static int[uiDrawTextFont *] _ref;
 
     this(uiDrawTextFont * font) {
         _font = font;
+        _ref[_font] = 1;
     }
 
     ~this() {
-        if (_font) {
+        _ref[_font]--;
+        if (_ref[_font] == 0) {
             uiDrawFreeTextFont(_font);
-            _font = null;
         }
+    }
+
+    this(this) {
+        _ref[_font]++;
     }
 
     auto handle() {
         return uiDrawTextFontHandle(_font);
     }
 
-    TextFont describe(TextFontDescriptor descriptor) {
+    ref describe(TextFontDescriptor descriptor) {
         uiDrawTextFontDescribe(_font, descriptor._descriptor);
         return this;
     }
 
-    TextFont getMetrics(TextFontMetrics metrics) {
+    ref getMetrics(TextFontMetrics metrics) {
         uiDrawTextFontGetMetrics(_font, metrics._metrics);
         return this;
     }
@@ -387,16 +410,22 @@ class TextFont {
 
 struct TextLayout {
     private uiDrawTextLayout * _layout;
+    static int[uiDrawTextLayout *] _ref;
 
     this(string text, TextFont font, double width) {
         _layout = uiDrawNewTextLayout(text.ptr, font._font, width);
+        _ref[_layout] = 1;
     }
 
     ~this() {
-        if (_layout) {
+        _ref[_layout]--;
+        if (_ref[_layout] == 0) {
             uiDrawFreeTextLayout(_layout);
-            _layout = null;
         }
+    }
+
+    this(this) {
+        _ref[_layout]++;
     }
 
     ref setWidth(double width) {

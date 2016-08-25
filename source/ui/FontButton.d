@@ -16,6 +16,6 @@ class FontButton : Control {
 
     import ui.Draw: TextFont;
     TextFont font() {
-        return new TextFont(uiFontButtonFont(_fontButton));
+        return TextFont(uiFontButtonFont(_fontButton));
     }
 }

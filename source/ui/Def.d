@@ -2,20 +2,20 @@
 
 static immutable Pi = 3.14159265358979323846264338327950288419716939937510582097494459;
 
-enum DrawBrushType : uint {
+enum BrushType : uint {
     Solid,
     LinearGradient,
     RadialGradient,
     Image,
 }
 
-enum DrawLineCap : uint {
+enum LineCap : uint {
     Flat,
     Round,
     Square,
 }
 
-enum DrawLineJoin : uint {
+enum LineJoin : uint {
     Miter,
     Round,
     Bevel,
@@ -23,12 +23,12 @@ enum DrawLineJoin : uint {
 
 static immutable DrawDefaultMiterLimit = 10.0;
 
-enum DrawFillMode : uint {
+enum FillMode : uint {
     Winding,
     Alternate,
 }
 
-enum DrawTextWeight : uint {
+enum TextWeight : uint {
     Thin,
     UltraLight,
     Light,
@@ -42,13 +42,13 @@ enum DrawTextWeight : uint {
     UltraHeavy,
 }
 
-enum DrawTextItalic : uint {
+enum TextItalic : uint {
     Normal,
     Oblique,
     Italic,
 }
 
-enum DrawTextStretch : uint {
+enum TextStretch : uint {
     UltraCondensed,
     ExtraCondensed,
     Condensed,
