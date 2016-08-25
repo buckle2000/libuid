@@ -468,7 +468,7 @@ struct uiDrawTextFont;
  +/
 
 struct uiDrawTextFontDescriptor {
-    const char *Family;
+    const(char) *Family;
     double Size;
     DrawTextWeight Weight;
     DrawTextItalic Italic;
