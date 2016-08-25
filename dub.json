@@ -21,6 +21,14 @@
             "libs-posix": ["ui"],
             "libs-windows": ["libui"],
             "mainSourceFile": "examples/example1.d"
+        },
+        {
+            "name": "example2",
+            "targetType": "executable",
+            "targetName": "example2",
+            "libs-posix": ["ui"],
+            "libs-windows": ["libui"],
+            "mainSourceFile": "examples/example2.d"
         }
     ]
 }

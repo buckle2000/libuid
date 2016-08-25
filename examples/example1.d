@@ -1,5 +1,3 @@
-import std.stdio;
-
 import ui;
 
 Control makeBasicControlPage() {
