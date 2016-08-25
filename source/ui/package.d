@@ -26,8 +26,6 @@ public import ui.Menu;
 public import ui.Area;
 public import ui.Draw;
 
-// TODO: others
-
 public import ui.FontButton;
 public import ui.ColorButton;
 public import ui.Form;
