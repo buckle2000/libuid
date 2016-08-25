@@ -115,28 +115,31 @@ struct DrawParams {
     private uiAreaDrawParams * _params;
 
     @property pragma(inline, true) {
+        import ui.Draw: Context;
         auto context() {
-            import ui.Draw: Context;
             return Context(_params.Context);
         }
+        void context(Context context) {
+            _params.Context = context._context;
+        }
 
-        double areaWidth() {
+        ref areaWidth() {
             return _params.AreaWidth;
         }
-        double areaHeight() {
+        ref areaHeight() {
             return _params.AreaHeight;
         }
 
-        double clipX() {
+        ref clipX() {
             return _params.ClipX;
         }
-        double clipY() {
+        ref clipY() {
             return _params.ClipY;
         }
-        double clipWidth() {
+        ref clipWidth() {
             return _params.ClipWidth;
         }
-        double clipHeight() {
+        ref clipHeight() {
             return _params.ClipHeight;
         }
     }
@@ -150,37 +153,36 @@ struct MouseEvent {
     private uiAreaMouseEvent * _event;
 
     @property pragma(inline, true) {
-        double x() {
+        ref x() {
             return _event.X;
         }
-        double y() {
+        ref y() {
             return _event.Y;
         }
 
-        double areaWidth() {
+        ref areaWidth() {
             return _event.AreaWidth;
         }
-        double areaHeight() {
+        ref areaHeight() {
             return _event.AreaHeight;
         }
 
-        int down() {
+        ref down() {
             return _event.Down;
         }
-        int up() {
+        ref up() {
             return _event.Up;
         }
 
-        int count() {
+        ref count() {
             return _event.Count;
         }
 
-        ModifiersT modifiers() {
+        ref modifiers() {
             return _event.Modifiers;
         }
 
-        import core.stdc.stdint: uint64_t;
-        uint64_t held1to64() {
+        ref held1to64() {
             return _event.Held1To64;
         }
     }
@@ -194,21 +196,21 @@ struct KeyEvent {
     private uiAreaKeyEvent * _event;
 
     @property pragma(inline, true) {
-        char key() {
+        ref key() {
             return _event.Key;
         }
-        ExtKeyT extKey() {
+        ref extKey() {
             return _event.ExtKey;
         }
-        ModifiersT modifier() {
+        ref modifier() {
             return _event.Modifier;
         }
 
-        ModifiersT modifiers() {
+        ref modifiers() {
             return _event.Modifiers;
         }
 
-        int up() {
+        ref up() {
             return _event.Up;
         }
     }
