@@ -4,10 +4,14 @@
 to prevent compatible issues. Dynamic library is recommend as you can build your programm without
 other static libraries to link.
 
-* Build existing example1 with dub:
+* Build existing examples with dub:
 
 ```bash
 dub build --config=example1
+```
+or
+```bash
+dub build --config=example2
 ```
 
 * Minimal Example:
