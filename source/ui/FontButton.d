@@ -14,8 +14,8 @@ class FontButton : Control {
         uiFontButtonOnChanged(_fontButton, &OnChangedCallback, cast(void *) this);
     }
 
-    // TODO: replace uiDrawTextFont to DrawTextFont
-    uiDrawTextFont * font() {
-        return uiFontButtonFont(_fontButton);
+    import ui.Draw: TextFont;
+    TextFont font() {
+        return TextFont(uiFontButtonFont(_fontButton));
     }
 }
