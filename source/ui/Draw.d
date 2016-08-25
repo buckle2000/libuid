@@ -45,9 +45,9 @@ struct Context {
     }
 }
 
-struct Path {
+class Path {
     private uiDrawPath * _path;
-    
+
     this(DrawFillMode mode) {
         _path = uiDrawNewPath(mode);
     }
@@ -59,12 +59,12 @@ struct Path {
         }
     }
 
-    ref newFigure(double x, double y) {
+    Path newFigure(double x, double y) {
         uiDrawPathNewFigure(_path, x, y);
         return this;
     }
 
-    ref newFigureWithArc(
+    Path newFigureWithArc(
         double xCenter, double yCenter,
         double radius, double startAngle, double sweep, bool negative
     ) {
@@ -73,12 +73,12 @@ struct Path {
         return this;
     }
 
-    ref lineTo(double x, double y) {
+    Path lineTo(double x, double y) {
         uiDrawPathLineTo(_path, x, y);
         return this;
     }
 
-    ref arcTo(
+    Path arcTo(
         double xCenter, double yCenter, double radius,
         double startAngle, double sweep, bool negative
     ) {
@@ -87,22 +87,22 @@ struct Path {
         return this;
     }
 
-    ref bezierTo(double c1x, double c1y, double c2x, double c2y, double endX, double endY) {
+    Path bezierTo(double c1x, double c1y, double c2x, double c2y, double endX, double endY) {
         uiDrawPathBezierTo(_path, c1x, c1y, c2x, c2y, endX, endY);
         return this;
     }
 
-    ref closeFigure() {
+    Path closeFigure() {
         uiDrawPathCloseFigure(_path);
         return this;
     }
 
-    ref addRectangle(double x, double y, double width, double height) {
+    Path addRectangle(double x, double y, double width, double height) {
         uiDrawPathAddRectangle(_path, x, y, width, height);
         return this;
     }
 
-    ref end() {
+    Path end() {
         uiDrawPathEnd(_path);
         return this;
     }
@@ -174,7 +174,7 @@ struct Matrix {
         uiDrawMatrixTransformPoint(_matrix, &x, &y);
         return this;
     }
-    
+
     ref transformSize(ref double x, ref double y) {
         uiDrawMatrixTransformSize(_matrix, &x, &y);
         return this;
@@ -188,7 +188,7 @@ struct Brush {
         ref type() {
             return _brush.Type;
         }
-        
+
         ref r() {
             return _brush.R;
         }
@@ -201,7 +201,7 @@ struct Brush {
         ref a() {
             return _brush.A;
         }
-        
+
         ref x0() {
             return _brush.X0;
         }
@@ -279,10 +279,10 @@ struct StrokeParams {
     }
 }
 
-struct FontFamilies {
+class FontFamilies {
     private uiDrawFontFamilies * _families;
 
-    this(int trivial_no_use = 0) {
+    this() {
         _families = uiDrawListFontFamilies;
     }
 
@@ -328,9 +328,9 @@ struct TextFontDescriptor {
             return _descriptor.Stretch;
         }
     }
-    
+
     TextFont loadClosestFont() {
-        return TextFont(uiDrawLoadClosestFont(_descriptor));
+        return new TextFont(uiDrawLoadClosestFont(_descriptor));
     }
 }
 
@@ -356,13 +356,13 @@ struct TextFontMetrics {
     }
 }
 
-struct TextFont {
+class TextFont {
     private uiDrawTextFont * _font;
 
     this(uiDrawTextFont * font) {
         _font = font;
     }
-    
+
     ~this() {
         if (_font) {
             uiDrawFreeTextFont(_font);
@@ -374,12 +374,12 @@ struct TextFont {
         return uiDrawTextFontHandle(_font);
     }
 
-    ref describe(TextFontDescriptor descriptor) {
+    TextFont describe(TextFontDescriptor descriptor) {
         uiDrawTextFontDescribe(_font, descriptor._descriptor);
         return this;
     }
 
-    ref getMetrics(TextFontMetrics metrics) {
+    TextFont getMetrics(TextFontMetrics metrics) {
         uiDrawTextFontGetMetrics(_font, metrics._metrics);
         return this;
     }
