@@ -58,6 +58,7 @@ struct Path {
         _ref[_path]--;
         if (_ref[_path] == 0) {
             uiDrawFreePath(_path);
+            _ref.remove(_path);
         }
     }
 
@@ -301,6 +302,7 @@ struct FontFamilies {
         _ref[_families]--;
         if (_ref[_families] == 0) {
             uiDrawFreeFontFamilies(_families);
+            _ref.remove(_families);
         }
     }
 
@@ -386,6 +388,7 @@ struct TextFont {
         _ref[_font]--;
         if (_ref[_font] == 0) {
             uiDrawFreeTextFont(_font);
+            _ref.remove(_font);
         }
     }
 
@@ -421,6 +424,7 @@ struct TextLayout {
         _ref[_layout]--;
         if (_ref[_layout] == 0) {
             uiDrawFreeTextLayout(_layout);
+            _ref.remove(_layout);
         }
     }
 
