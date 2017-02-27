@@ -6,7 +6,6 @@
     "targetType": "library",
     "targetName": "uid",
     "targetPath": "output",
-    "dflags-windows-x86-dmd": ["-m32mscoff"],
     "description": "D OO interface of libui",
     "copyright": "Copyright © 2016, mogu",
     "license": "MIT",
