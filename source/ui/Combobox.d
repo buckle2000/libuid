@@ -15,7 +15,8 @@ class Combobox : Control {
     }
 
     Combobox append(string text) {
-        uiComboboxAppend(_combobox, text.ptr);
+        import std.string: toStringz;
+        uiComboboxAppend(_combobox, text.toStringz);
         return this;
     }
 

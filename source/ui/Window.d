@@ -2,9 +2,10 @@
 
 import ui.Control;
 
-import std.typecons: Tuple;
-
 class Window : Control {
+    import std.typecons: Tuple;
+    import std.string: toStringz;
+
     protected uiWindow * _window;
 
     mixin EventListenerMixin!("OnPositionChanged", Window);
@@ -13,7 +14,7 @@ class Window : Control {
 
 public:
     this(string title = "", int width = 240, int height = 180, bool hasMenubar = false) {
-        _window = uiNewWindow(title.ptr, width, height, cast(int) hasMenubar);
+        _window = uiNewWindow(title.toStringz, width, height, cast(int) hasMenubar);
         super(cast(uiControl *) _window);
 
         uiWindowOnPositionChanged(_window, &OnPositionChangedCallback, cast(void*) this);
@@ -26,7 +27,7 @@ public:
     }
 
     Window setTitle(string title) {
-        uiWindowSetTitle(_window, title.ptr);
+        uiWindowSetTitle(_window, title.toStringz);
         return this;
     }
 
@@ -104,12 +105,12 @@ public:
     }
 
     Window msgBox(string title, string discription) {
-        uiMsgBox(_window, title.ptr, discription.ptr);
+        uiMsgBox(_window, title.toStringz, discription.toStringz);
         return this;
     }
 
     Window msgBoxError(string title, string discription) {
-        uiMsgBoxError(_window, title.ptr, discription.ptr);
+        uiMsgBoxError(_window, title.toStringz, discription.toStringz);
         return this;
     }
 }

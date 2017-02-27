@@ -3,10 +3,12 @@
 import ui.Control;
 
 class Label : Control {
+    import std.string: toStringz;
+    
     protected uiLabel * _label;
 
     this(string text = "") {
-        _label = uiNewLabel(text.ptr);
+        _label = uiNewLabel(text.toStringz);
         super(cast(uiControl *) _label);
     }
 
@@ -15,7 +17,7 @@ class Label : Control {
     }
     
     Label setText(string text) {
-        uiLabelSetText(_label, text.ptr);
+        uiLabelSetText(_label, text.toStringz);
         return this;
     }
 }

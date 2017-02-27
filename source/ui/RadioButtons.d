@@ -15,7 +15,8 @@ class RadioButtons : Control {
     }
 
     RadioButtons append(string text) {
-        uiRadioButtonsAppend(_radioButtons, text.ptr);
+        import std.string: toStringz;
+        uiRadioButtonsAppend(_radioButtons, text.toStringz);
         return this;
     }
 

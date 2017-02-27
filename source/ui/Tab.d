@@ -3,6 +3,8 @@
 import ui.Control;
 
 class Tab : Control {
+    import std.string: toStringz;
+
     protected uiTab * _tab;
 
     this() {
@@ -15,7 +17,7 @@ class Tab : Control {
         enforce(child, "atempt to append a child which is null.");
         _children ~= child;
         child._parent = this;
-        uiTabAppend(_tab, name.ptr, child._control);
+        uiTabAppend(_tab, name.toStringz, child._control);
         return this;
     }
 
@@ -24,7 +26,7 @@ class Tab : Control {
         enforce(child, "atempt to insert a child which is null.");
         _children = _children[0..before] ~ child ~ _children[before..$];
         child._parent = this;
-        uiTabInsertAt(_tab, name.ptr, cast(int) before, child._control);
+        uiTabInsertAt(_tab, name.toStringz, cast(int) before, child._control);
         return this;
     }
     

@@ -4,6 +4,8 @@ import ui.Core;
 import ui.MenuItem;
 
 class Menu {
+    import std.string: toStringz;
+
     // Notice: now libui's menu implicit attached to window, it's not OO.
     // this makes Menu and MenuItem do not destroy anyhow.
     private static Object[] _menuAndItems;
@@ -12,17 +14,17 @@ class Menu {
 
     this(string name = "") {
         _menuAndItems ~= this;
-        _menu = uiNewMenu(name.ptr);
+        _menu = uiNewMenu(name.toStringz);
     }
 
     MenuItem appendItem(string name) {
-        auto item = new MenuItem(uiMenuAppendItem(_menu, name.ptr));
+        auto item = new MenuItem(uiMenuAppendItem(_menu, name.toStringz));
         _menuAndItems ~= item;
         return item;
     }
 
     MenuItem appendCheckItem(string name) {
-        auto item = new MenuItem(uiMenuAppendCheckItem(_menu, name.ptr));
+        auto item = new MenuItem(uiMenuAppendCheckItem(_menu, name.toStringz));
         _menuAndItems ~= item;
         return item;
     }

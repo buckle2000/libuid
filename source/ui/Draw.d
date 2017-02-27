@@ -416,7 +416,8 @@ struct TextLayout {
     static int[uiDrawTextLayout *] _ref;
 
     this(string text, TextFont font, double width) {
-        _layout = uiDrawNewTextLayout(text.ptr, font._font, width);
+        import std.string: toStringz;
+        _layout = uiDrawNewTextLayout(text.toStringz, font._font, width);
         _ref[_layout] = 1;
     }
 

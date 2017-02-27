@@ -3,6 +3,8 @@
 import ui.Control;
 
 class MultilineEntry : Control {
+    import std.string: toStringz;
+
     protected uiMultilineEntry * _multilineEntry;
 
     mixin EventListenerMixin!("OnChanged", MultilineEntry);
@@ -23,12 +25,12 @@ class MultilineEntry : Control {
     }
 
     MultilineEntry setText(string text) {
-        uiMultilineEntrySetText(_multilineEntry, text.ptr);
+        uiMultilineEntrySetText(_multilineEntry, text.toStringz);
         return this;
     }
 
     MultilineEntry append(string text) {
-        uiMultilineEntryAppend(_multilineEntry, text.ptr);
+        uiMultilineEntryAppend(_multilineEntry, text.toStringz);
         return this;
     }
 

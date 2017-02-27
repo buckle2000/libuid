@@ -15,7 +15,8 @@ class Form : Control {
         enforce(child, "atempt to append a child which is null.");
         _children ~= child;
         child._parent = this;
-        uiFormAppend(_form, label.ptr, child._control, cast(int) stretchy);
+        import std.string: toStringz;
+        uiFormAppend(_form, label.toStringz, child._control, cast(int) stretchy);
         return this;
     }
 

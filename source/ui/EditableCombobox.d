@@ -3,6 +3,8 @@
 import ui.Control;
 
 class EditableCombobox : Control {
+    import std.string: toStringz;
+
     protected uiEditableCombobox * _editableCombobox;
 
     mixin EventListenerMixin!("OnChanged", EditableCombobox);
@@ -15,7 +17,7 @@ class EditableCombobox : Control {
     }
 
     EditableCombobox append(string text) {
-        uiEditableComboboxAppend(_editableCombobox, text.ptr);
+        uiEditableComboboxAppend(_editableCombobox, text.toStringz);
         return this;
     }
 
@@ -24,7 +26,7 @@ class EditableCombobox : Control {
     }
 
     EditableCombobox setText(string text) {
-        uiEditableComboboxSetText(_editableCombobox, text.ptr);
+        uiEditableComboboxSetText(_editableCombobox, text.toStringz);
         return this;
     }
 }

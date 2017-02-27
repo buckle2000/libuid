@@ -3,12 +3,14 @@
 import ui.Control;
 
 class Checkbox : Control {
+    import std.string: toStringz;
+
     protected uiCheckbox * _checkbox;
 
     mixin EventListenerMixin!("OnToggled", Checkbox);
 
     this(string text = "") {
-        _checkbox = uiNewCheckbox(text.ptr);
+        _checkbox = uiNewCheckbox(text.toStringz);
         super(cast(uiControl *) _checkbox);
 
         uiCheckboxOnToggled(_checkbox, &OnToggledCallback, cast(void *) this);
@@ -19,7 +21,7 @@ class Checkbox : Control {
     }
 
     Checkbox setText(string text) {
-        uiCheckboxSetText(_checkbox, text.ptr);
+        uiCheckboxSetText(_checkbox, text.toStringz);
         return this;
     }
 

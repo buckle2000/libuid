@@ -3,10 +3,12 @@
 import ui.Control;
 
 class Group : Control {
+    import std.string: toStringz;
+
     protected uiGroup * _group;
 
     this(string title = "") {
-        _group = uiNewGroup(title.ptr);
+        _group = uiNewGroup(title.toStringz);
         super(cast(uiControl *) _group);
     }
 
@@ -15,7 +17,7 @@ class Group : Control {
     }
 
     Group setTitle(string title) {
-        uiGroupSetTitle(_group, title.ptr);
+        uiGroupSetTitle(_group, title.toStringz);
         return this;
     }
 

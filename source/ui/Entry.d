@@ -35,7 +35,8 @@ class Entry : Control {
     }
     
     Entry setText(string text) {
-        uiEntrySetText(_entry, text.ptr);
+        import std.string: toStringz;
+        uiEntrySetText(_entry, text.toStringz);
         return this;
     }
 
