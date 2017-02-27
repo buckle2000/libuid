@@ -7,12 +7,14 @@ other static libraries to link.
 * Build existing examples with dub:
 
 ```bash
-dub build --config=example1
+dub build --config=example1 --arch=x86_mscoff
 ```
 or
 ```bash
-dub build --config=example2
+dub build --config=example2 --arch=x86_64
 ```
+You can use `--arch` to specify architecture of you platform. Note in windows, use `--arch=x86_mscoff`
+to create 32bit binary.
 
 * Minimal Example:
 
