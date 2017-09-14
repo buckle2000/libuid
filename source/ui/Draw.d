@@ -115,9 +115,12 @@ struct Path {
     }
 }
 
-struct Matrix {
-    private uiDrawMatrix * _matrix = new uiDrawMatrix;
-
+class Matrix {
+    private uiDrawMatrix * _matrix;
+    this()
+    {
+        _matrix = new uiDrawMatrix;
+    }
     @property pragma(inline, true) {
         ref m11() {
             return _matrix.M11;
@@ -139,32 +142,32 @@ struct Matrix {
         }
     }
 
-    ref setIdentity() {
+    Matrix setIdentity() {
         uiDrawMatrixSetIdentity(_matrix);
         return this;
     }
 
-    ref translate(double x, double y) {
+    Matrix translate(double x, double y) {
         uiDrawMatrixTranslate(_matrix, x, y);
         return this;
     }
 
-    ref scale(double xCenter, double yCenter, double x, double y) {
+    Matrix scale(double xCenter, double yCenter, double x, double y) {
         uiDrawMatrixScale(_matrix, xCenter, yCenter, x, y);
         return this;
     }
 
-    ref rotate(double x, double y, double amount) {
+    Matrix rotate(double x, double y, double amount) {
         uiDrawMatrixRotate(_matrix, x, y, amount);
         return this;
     }
 
-    ref skew(double x, double y, double xamount, double yamount) {
+    Matrix skew(double x, double y, double xamount, double yamount) {
         uiDrawMatrixSkew(_matrix, x, y, xamount, yamount);
         return this;
     }
 
-    ref multiply(ref Matrix other) {
+    Matrix multiply(ref Matrix other) {
         uiDrawMatrixMultiply(_matrix, other._matrix);
         return this;
     }
@@ -177,20 +180,24 @@ struct Matrix {
         return cast(bool) uiDrawMatrixInvert(_matrix);
     }
 
-    ref transformPoint(ref double x, ref double y) {
+    Matrix transformPoint(ref double x, ref double y) {
         uiDrawMatrixTransformPoint(_matrix, &x, &y);
         return this;
     }
 
-    ref transformSize(ref double x, ref double y) {
+    Matrix transformSize(ref double x, ref double y) {
         uiDrawMatrixTransformSize(_matrix, &x, &y);
         return this;
     }
 }
 
-struct Brush {
-    private uiDrawBrush * _brush = new uiDrawBrush;
-
+class Brush {
+    private uiDrawBrush * _brush;
+    
+    this()
+    {
+         _brush = new uiDrawBrush;
+    }
     @property pragma(inline, true) {
         ref type() {
             return _brush.Type;
@@ -225,7 +232,7 @@ struct Brush {
             return _brush.OuterRadius;
         }
         auto stops() {
-            return BrushGradientStop(_brush.Stops);
+            return new BrushGradientStop(_brush.Stops);
         }
         void stops(BrushGradientStop stop) {
             _brush.Stops = stop._stop;
@@ -236,9 +243,16 @@ struct Brush {
     }
 }
 
-struct BrushGradientStop {
-    private uiDrawBrushGradientStop * _stop = new uiDrawBrushGradientStop;
-
+class BrushGradientStop {
+    private uiDrawBrushGradientStop * _stop;
+    this()
+    {
+        _stop = new uiDrawBrushGradientStop;
+    }
+    this(uiDrawBrushGradientStop*  _stops)
+    {
+        _stop=_stops;
+    }
     @property pragma(inline, true) {
         ref pos() {
             return _stop.Pos;
@@ -258,9 +272,12 @@ struct BrushGradientStop {
     }
 }
 
-struct StrokeParams {
-    private uiDrawStrokeParams * _params = new uiDrawStrokeParams;
-
+class StrokeParams {
+    private uiDrawStrokeParams * _params;
+    this()
+    {
+        _params = new uiDrawStrokeParams;
+    }
     @property pragma(inline, true) {
         ref cap() {
             return _params.Cap;
@@ -321,9 +338,12 @@ struct FontFamilies {
     }
 }
 
-struct TextFontDescriptor {
-    private uiDrawTextFontDescriptor * _descriptor = new uiDrawTextFontDescriptor;
-
+class TextFontDescriptor {
+    private uiDrawTextFontDescriptor * _descriptor;
+    this()
+    {
+        _descriptor = new uiDrawTextFontDescriptor;
+    }
     @property pragma(inline, true) {
         string family() {
             import core.stdc.string: strlen;
@@ -353,9 +373,12 @@ struct TextFontDescriptor {
     }
 }
 
-struct TextFontMetrics {
-    private uiDrawTextFontMetrics * _metrics = new uiDrawTextFontMetrics;
-
+class TextFontMetrics {
+    private uiDrawTextFontMetrics * _metrics;
+    this()
+    {
+        _metrics = new uiDrawTextFontMetrics;
+    }
     @property pragma(inline, true) {
         ref ascent() {
             return _metrics.Ascent;
