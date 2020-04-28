@@ -2,10 +2,20 @@
 
 import ui.Control;
 
-enum EntryStyle {
+enum EntryType {
     Normal,
     Password,
     Search,
+}
+uiEntry* toEntry(EntryType type) {
+    final switch (type) with(EntryType) {
+        case Normal:
+            return uiNewEntry();
+        case Password:
+            return uiNewPasswordEntry();
+        case Search:
+            return uiNewSearchEntry();
+    }
 }
 
 class Entry : Control {
@@ -13,18 +23,8 @@ class Entry : Control {
 
     mixin EventListenerMixin!("OnChanged", Entry);
 
-    this(EntryStyle style = EntryStyle.Normal) {
-        final switch (style) with(EntryStyle) {
-            case Normal:
-                _entry = uiNewEntry();
-                break;
-            case Password:
-                _entry = uiNewPasswordEntry();
-                break;
-            case Search:
-                _entry = uiNewSearchEntry();
-                break;
-        }
+    this(EntryType type = EntryType.Normal) {
+        _entry = type.toEntry;
         super(cast(uiControl *) _entry);
 
         uiEntryOnChanged(_entry, &OnChangedCallback, cast(void *) this);

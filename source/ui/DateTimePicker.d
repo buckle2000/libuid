@@ -2,27 +2,28 @@
 
 import ui.Control;
 
-enum DateTimePickerStype {
+enum DateTimePickerType {
     DateTime,
     Date,
     Time,
 }
 
+uiDateTimePicker* toDateTimePicker(DateTimePickerType type) {
+    final switch(type) with(DateTimePickerType) {
+        case DateTime:
+            return uiNewDateTimePicker();
+        case Date:
+            return uiNewDatePicker();
+        case Time:
+            return uiNewTimePicker();
+    }
+}
+
 class DateTimePicker : Control {
     protected uiDateTimePicker * _dateTimePicker;
 
-    this(DateTimePickerStype stype = DateTimePickerStype.DateTime) {
-        final switch(stype) with(DateTimePickerStype) {
-            case DateTime:
-                _dateTimePicker = uiNewDateTimePicker();
-                break;
-            case Date:
-                _dateTimePicker = uiNewDatePicker();
-                break;
-            case Time:
-                _dateTimePicker = uiNewTimePicker();
-                break;
-        }
+    this(DateTimePickerType type = DateTimePickerType.DateTime) {
+        _dateTimePicker = type.toDateTimePicker;
         super(cast(uiControl *) _dateTimePicker);
     }
 }
